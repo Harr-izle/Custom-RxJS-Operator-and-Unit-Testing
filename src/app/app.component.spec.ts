@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { of } from 'rxjs';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -20,10 +21,27 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('Custom-RxJS-Operator-and-Unit-Testing');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, Custom-RxJS-Operator-and-Unit-Testing');
+  it('should multiply the numbers by a given factor', () => {
+    const app = new AppComponent();
+    const mockNumbers$ = of(1, 2, 3);
+    const multiplyBy5 = app.multiplyBy(5);
+    let output: number[] = [];
+    const result$ = multiplyBy5(mockNumbers$);
+    result$.subscribe((result) => {
+      output = [...output, result];
+    });
+    expect(output).toEqual([5, 10, 15]);
+  });
+
+  it('should divide the numbers by a given divisor', () => {
+    const app = new AppComponent();
+    const mockNumbers$ = of(10, 20, 30);
+    const divideBy2 = app.divideBy(2);
+    let output: number[] = [];
+    const result$ = divideBy2(mockNumbers$);
+    result$.subscribe((result) => {
+      output = [...output, result];
+    });
+    expect(output).toEqual([5, 10, 15]);
   });
 });
